@@ -1,0 +1,80 @@
+\def\cprime{$'$}
+\begin{thebibliography}{10}
+
+\bibitem{raoufQubo}
+H.~Alghassi and R.~Dridi.
+\newblock Quantum annealing algorithms in cancer genomics - in progress.
+\newblock 2016.
+
+\bibitem{Bron:1973:AFC:362342.362367}
+C.~Bron and J.~Kerbosch.
+\newblock Algorithm 457: Finding all cliques of an undirected graph.
+\newblock {\em Commun. ACM}, 16(9):575--577, Sept. 1973.
+
+\bibitem{MR2476414}
+G.~Carlsson.
+\newblock Topology and data.
+\newblock {\em Bull. Amer. Math. Soc. (N.S.)}, 46(2):255--308, 2009.
+
+\bibitem{CAZALS2008564}
+F.~Cazals and C.~Karande.
+\newblock A note on the problem of reporting maximal cliques.
+\newblock {\em Theoretical Computer Science}, 407(1):564 -- 568, 2008.
+
+\bibitem{raoufHomology}
+R.~Dridi and H.~Alghassi.
+\newblock Homology computation of large point clouds using quantum annealing.
+\newblock {\em arXiv:1512.09328}, 2015.
+
+\bibitem{farhi}
+E.~{Farhi}, J.~{Goldstone}, S.~{Gutmann}, and M.~{Sipser}.
+\newblock {Quantum Computation by Adiabatic Evolution}.
+\newblock {\em eprint arXiv:quant-ph/0001106}, Jan. 2000.
+
+\bibitem{hallmarksOfCancer}
+D.~Hanahan and R.~A. Weinberg.
+\newblock The hallmarks of cancer.
+\newblock {\em Cell}, 100(1):57--70, 2016/09/19.
+
+\bibitem{natueDwave}
+M.~W. Johnson, M.~H.~S. Amin, S.~Gildert, T.~Lanting, F.~Hamze, N.~Dickson,
+  R.~Harris, A.~J. Berkley, J.~Johansson, P.~Bunyk, E.~M. Chapple, C.~Enderud,
+  J.~P. Hilton, K.~Karimi, E.~Ladizinsky, N.~Ladizinsky, T.~Oh, I.~Perminov,
+  C.~Rich, M.~C. Thom, E.~Tolkacheva, C.~J.~S. Truncik, S.~Uchaikin, J.~Wang,
+  B.~Wilson, and G.~Rose.
+\newblock Quantum annealing with manufactured spins.
+\newblock {\em Nature}, 473(7346):194--198, 05 2011.
+
+\bibitem{seth}
+S.~Lloyd, S.~Garnerone, and P.~Zanardi.
+\newblock Quantum algorithms for topological and geometric analysis of data.
+\newblock 7:10138 EP --, 01 2016.
+
+\bibitem{GBM2008}
+T.~C. G. A.~R. Network.
+\newblock Comprehensive genomic characterization defines human glioblastoma
+  genes and core pathways.
+\newblock {\em Nature}, 455(7216):1061--1068, 10 2008.
+
+\bibitem{doi:10.1056/NEJMoa1301689}
+T.~C. G. A.~R. Network.
+\newblock Genomic and epigenomic landscapes of adult de novo acute myeloid
+  leukemia.
+\newblock {\em New England Journal of Medicine}, 368(22):2059--2074, 2013.
+\newblock PMID: 23634996.
+
+\bibitem{Vogelstein}
+B.~Vogelstein and K.~W. Kinzler.
+\newblock Cancer genes and the pathways they control.
+\newblock {\em Nat Med}, 10(8):789--799, 08 2004.
+
+\bibitem{bioOfCancer}
+R.~Weinberg.
+\newblock {\em The Biology of Cancer}.
+
+\bibitem{Yeang01082008}
+C.-H. Yeang, F.~McCormick, and A.~Levine.
+\newblock Combinatorial patterns of somatic gene mutations in cancer.
+\newblock {\em The FASEB Journal}, 22(8):2605--2622, 2008.
+
+\end{thebibliography}

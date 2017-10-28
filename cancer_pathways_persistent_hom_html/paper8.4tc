@@ -1,0 +1,17 @@
+\expandafter\ifx\csname doTocEntry\endcsname\relax \expandafter\endinput\fi
+\doTocEntry\toclikesection{}{\csname a:TocLink\endcsname{1}{x1-1000}{QQ2-1-1}{Introduction}}{4}\relax 
+\doTocEntry\toclikesection{}{\csname a:TocLink\endcsname{1}{x1-2000}{QQ2-1-2}{Results}}{6}\relax 
+\doTocEntry\toclikesubsection{}{\csname a:TocLink\endcsname{1}{x1-3000}{QQ2-1-3}{The graph}}{7}\relax 
+\doTocEntry\toclikesubsection{}{\csname a:TocLink\endcsname{1}{x1-4000}{QQ2-1-4}{The complex}}{8}\relax 
+\doTocEntry\toclikesubsection{}{\csname a:TocLink\endcsname{1}{x1-5000}{QQ2-1-5}{The homology}}{10}\relax 
+\doTocEntry\toclof{1}{\csname a:TocLink\endcsname{1}{x1-50021}{}{\ignorespaces The graph has two connected components which implies $\beta _0=2$. It also has two cycles which are not boundaries of triangles, thus $\beta _1=2$. Higher Betti numbers are zero. }}{figure}\relax 
+\doTocEntry\toclof{2}{\csname a:TocLink\endcsname{1}{x1-50032}{}{\ignorespaces The graph has two connected components giving $\beta _0=2$. It also has 7 cycles which are not boundaries of triangles which yields $\beta _1=7$. Higher Betti numbers are zero here as well. If the different sides of the hexagonal prism (right component) are covered with triangles then we get instead $\beta _1=0$ and $\beta _2=1$.}}{figure}\relax 
+\doTocEntry\toclikesubsection{}{\csname a:TocLink\endcsname{1}{x1-6000}{QQ2-1-8}{Quantum computations and D-Wave quantum processor}}{14}\relax 
+\doTocEntry\toclikesection{}{\csname a:TocLink\endcsname{1}{x1-7000}{QQ2-1-9}{Real mutation data}}{15}\relax 
+\doTocEntry\toclikesubsection{}{\csname a:TocLink\endcsname{1}{x1-8000}{QQ2-1-10}{AML}}{15}\relax 
+\doTocEntry\toclof{3}{\csname a:TocLink\endcsname{1}{x1-80013}{}{\ignorespaces {\abovedisplayskip 11\p@ plus3\p@ minus6\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6.5\p@ plus3.5\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 5\p@ plus2.5\p@ minus\p@ \topsep 10\p@ plus4\p@ minus6\p@ \itemsep 5\p@ plus2.5\p@ minus\p@ {\leftmargin \leftmargini \topsep 9\p@ plus3\p@ minus5\p@ \parsep 4.5\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip The 1-skeleton of the nerve $\mathcal  N_\varepsilon $ for $\varepsilon =1$ for AML data. In this case, the nerve is homotopy equivalent to the sphere. The different pathways represented by the nodes are given in the table above.} }}{figure}\relax 
+\doTocEntry\toclikesubsection{}{\csname a:TocLink\endcsname{1}{x1-9000}{QQ2-1-12}{GBM}}{19}\relax 
+\doTocEntry\toclof{4}{\csname a:TocLink\endcsname{1}{x1-90014}{}{\ignorespaces {\abovedisplayskip 11\p@ plus3\p@ minus6\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6.5\p@ plus3.5\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 5\p@ plus2.5\p@ minus\p@ \topsep 10\p@ plus4\p@ minus6\p@ \itemsep 5\p@ plus2.5\p@ minus\p@ {\leftmargin \leftmargini \topsep 9\p@ plus3\p@ minus5\p@ \parsep 4.5\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip The nerve for the space of pathways for GBM data (see table below). The nerve is homotopy equivalent to a genus-2 surface.} }}{figure}\relax 
+\doTocEntry\toclikesection{}{\csname a:TocLink\endcsname{1}{x1-10000}{QQ2-1-14}{Conclusion}}{22}\relax 
+\doTocEntry\toclikesection{}{\csname a:TocLink\endcsname{1}{x1-11000}{QQ2-1-15}{Acknowledgement}}{22}\relax 
+\doTocEntry\toclikesection{}{\csname a:TocLink\endcsname{1}{x1-12000}{QQ2-1-16}{References}}{23}\relax 

@@ -1,0 +1,1409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Topological and quantum tools for
+de novo mutated driver pathways discovery in cancer</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<!-- html --> 
+<meta name="src" content="paper8.tex"> 
+<link rel="stylesheet" type="text/css" href="paper8.css"> 
+</head><body 
+>
+<div class="maketitle">
+                                                                                       
+                                                                                       
+                                                                                       
+                                                                                       
+
+<h2 class="titleHead">Topological and quantum tools for<br />
+de novo mutated driver pathways discovery in cancer</h2>
+<div class="author" ><span 
+class="cmr-12x-x-120">Raouf D - joint work Hedayat Alghassi</span><br /></div><br />
+<div class="date" ><span 
+class="cmr-12x-x-120">October 28, 2017</span></div>
+</div>
+<div 
+class="abstract" 
+>
+<div class="center" 
+>
+<!--l. 47--><p class="noindent" >
+<!--l. 47--><p class="noindent" ><span 
+class="cmbx-10x-x-109">Abstract</span></div>
+<!--l. 48--><p class="indent" >   <span 
+class="cmr-10x-x-109">&#x00A0;</span><span 
+class="cmr-10x-x-109">&#x00A0;</span><br 
+class="newline" /><span 
+class="cmr-10x-x-109">It  has  been  recognized  that  a  key  step  towards  defeating  cancer  is  a  deep</span>
+<span 
+class="cmr-10x-x-109">understanding  of  the  genomic  changes  that  occur  before  and  during  the</span>
+<span 
+class="cmr-10x-x-109">tumorgenesis. Our work attempts to contribute to this understanding through the</span>
+<span 
+class="cmr-10x-x-109">proposal of a novel topological framework and to introduce the use of quantum</span>
+<span 
+class="cmr-10x-x-109">annealing to help with large scale computations one faces in genomic data analysis.</span>
+<span 
+class="cmr-10x-x-109">We hope that, within this framework and armed with the computational capabilities</span>
+<span 
+class="cmr-10x-x-109">of quantum computers, a new type of questions about the data can be asked i.e.,</span>
+<span 
+class="cmr-10x-x-109">a different kind of hypotheses can be formulated. We have used in our analysis</span>
+<span 
+class="cmr-10x-x-109">real (TCGA) mutation data of two types of tumour: Acute myeloid leukemia and</span>
+<span 
+class="cmr-10x-x-109">Glioblastoma  multiform.  As  a  first  application,  we  explain  how  the  noisy  data</span>
+<span 
+class="cmr-10x-x-109">problem in the data-driven pathways discovery is dealt with within this framework</span>
+<span 
+class="cmr-10x-x-109">using  persistent  homology.  We  present  a  complete  persistent  homology-based</span>
+<span 
+class="cmr-10x-x-109">algorithm built on the top of our quantum procedure. For both datasets, using our</span>
+<span 
+class="cmr-10x-x-109">homology based quantum pipeline, we have recovered the same pathways previously</span>
+<span 
+class="cmr-10x-x-109">found in addition to new additional pathways.</span>
+<!--l. 60--><p class="indent" >   <span 
+class="cmr-10x-x-109">&#x00A0;</span><span 
+class="cmr-10x-x-109">&#x00A0;</span><br 
+class="newline" />
+</div>
+<!--l. 73--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" /><span 
+class="cmbx-12">Key words: </span>Cancer genomics, mutation data, acute myeloid leukemia, glioblastoma multiform,
+quantum computers, persistent homology, topological data analysis.
+                                                                                       
+                                                                                       
+<h3 class="likesectionHead"><a 
+ id="x1-1000"></a>Introduction</h3>
+<!--l. 91--><p class="noindent" >Cancer is driven by somatic mutations that target signalling and regulatory pathways that
+control cellular proliferation and cell death&#x00A0;<span class="cite">[<a 
+href="#XbioOfCancer">13</a>]</span>. Understanding how this happens is
+of paramount importance in order to improve our ability to intervene and attack
+cancer.
+<!--l. 94--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />Since the advent of DNA sequencing technologies, our understanding has progressed
+enormously. Current advances range from the introduction of a single anti-cancer agents, which
+simply bind with growth factor receptors stopping abnormal cell proliferations (For
+instance, in the context of breast cancer, Herceptin antibody stops cells abnormal
+proliferation signals by binding with the excess of growth factor receptors on the cell surface
+caused by point mutations in the gene Her2. Gleevec is a second example. It is used
+to treat chronic myeloid leukemia which is a type of blood cell tumour due to an
+inappropriate gene fusion product of a translocation in chromosomes 9 and 22. The
+resulting fusion gene BCR-ABL has an increased kinase activity resulting an increase in
+proliferation signals. Similarly to Herceptin, Gleevec blocks the growth signals the
+abnormal fusion gene generates and thus prevents the cell proliferation) to more
+sophisticated approaches such as immunotherapy which activates the immune system against
+cancer cells and as well as the use of combinations of therapeutic agents to attack
+multiple pathways fundamental in cancer development, preventing resistance from
+occurring.
+<!--l. 108--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />Sadly, cancer morbidity is still very high and our understanding is still incomplete
+particularly for the advanced stages of the tumorigenesis. As mathematicians and
+scientists in computation, we are concerned about two reasons related to this limitation:
+1) not all relevant pathways have been identified 2) and more fundamentally, we
+don&#8217;t know how these mutations affecting different pathways work together to cause
+cancer.
+<!--l. 113--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />The work discussed in the present paper is part of our series of two papers which intent to join
+efforts in elucidating these two problems in particular. The other paper of this series is <span class="cite">[<a 
+href="#XraoufQubo">1</a>]</span>. Our
+contribution is threefold:
+<ul class="itemize1">
+<li class="itemize">It is a fact that the computational determination of pathways is expensive and
+beyond the capabilities of classical computers. For this reason we have started our
+investigation by explaining how quantum computers can be used. We propose a new
+quantum procedure <span class="cite">[<a 
+href="#XraoufQubo">1</a>]</span> which we have tested on D-Wave 2X quantum processor.
+This is in addition to simplicial complexes construction algorithms discussed in <span class="cite">[<a 
+href="#XraoufHomology">5</a>]</span>
+(the connection between simplicial complexes and pathways is introduced below).
+</li>
+<li class="itemize">It is also a fact that, due to errors occurring during the sequencing or/and in the
+different  steps  of  preparing  the  data,  mutation  data  is  often  noisy.  Our  second
+contribution is the introduction of topological analysis for fine tuning our quantum
+procedure <span class="cite">[<a 
+href="#XraoufQubo">1</a>]</span> for a more robust outcome. The technique we have used is called
+                                                                                       
+                                                                                       
+persistent homology and is a powerful tool in topological data analysis&#x00A0;<span class="cite">[<a 
+href="#XMR2476414">3</a>]</span>.
+</li>
+<li class="itemize">The third contribution is the introduction of the mathematical concept of &#8220;space
+of pathways&#8221;. In fact, it plays an important role in 2 above but as a tool or a
+construction. We have tried to go beyond that and explored it as concept in a
+way closer to the &#8220;integrated circuit of the cell&#8221; picture of <span class="cite">[<a 
+href="#XhallmarksOfCancer">7</a>]</span>. We hope (as we
+usually do in topological data analysis) that the global topological properties of this
+space translate into new insights on how mutations work together in affecting the
+relevant pathways and causing cancer. Exploring the usefulness of this approach
+(i.e., biological validation of the approach for which we have some finding - see
+Conclusion)  is  under  investigation  and  is  the  ultimate  goal  of  this  topological
+investigation.
+</li></ul>
+<!--l. 138--><p class="noindent" >The first contribution has been detailed and compared to other available approaches in <span class="cite">[<a 
+href="#XraoufQubo">1</a>]</span>.
+The last two are the subject of the present paper which we now outline its main
+ideas. Our topological journey departs from the fact that signalling or regulatory
+pathways are in fact independent sets (modulo some notion of tolerance introduced in
+the next Section to accommodate noise in the data as well as potential interactions
+between pathways constituents such as crosstalk and synthetic lethality) and thus when
+grouped together they define a <span 
+class="cmti-12">simplicial complex </span>(i.e., a collection of objects called
+<span 
+class="cmti-12">faces </span>closed under some boundary map i.e., the boundary of a face is again a face.
+A clique (resp. independence) complex of a graph <span 
+class="cmmi-12">G </span>is a simplicial complex whose
+faces are cliques (resp. independent sets) of <span 
+class="cmmi-12">G </span>and boundary map is the inclusion of
+sets) . This vantage point connects us to the marvellous world of topology where
+simplicial complexes are the prototypes of spaces with shapes. Our journey is all
+about exploring the usefulness of this notion of shape in cancer genomics. In fact, all
+what is presented here (point 2 and 3 above) is articulated around the sequence of
+assignments:
+<!--l. 146--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"><table id="TBL-2" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-2-1g"><col 
+id="TBL-2-1"><col 
+id="TBL-2-2"><col 
+id="TBL-2-3"><col 
+id="TBL-2-4"><col 
+id="TBL-2-5"><col 
+id="TBL-2-6"><col 
+id="TBL-2-7"></colgroup><tr  
+ style="vertical-align:baseline;" id="TBL-2-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-1"  
+class="td11"><a 
+ id="x1-1000doc"></a> <span 
+class="cmbx-12">mutationData</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-2"  
+class="td11"><span 
+class="cmsy-10x-x-120">&#x2192;</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-3"  
+class="td11"><span 
+class="cmbx-12">graphs</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-4"  
+class="td11"><span 
+class="cmsy-10x-x-120">&#x2192;</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-5"  
+class="td11"><span 
+class="cmbx-12">SpaceOfPathways</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-6"  
+class="td11"><span 
+class="cmsy-10x-x-120">&#x2192;</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-7"  
+class="td11"><span 
+class="cmbx-12">ShapeMeasurements</span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-1"  
+class="td11">      <span 
+class="cmmi-12">X         </span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-2"  
+class="td11"><img 
+src="paper80x.png" alt="&#x21A6;&#x2192;"  class="mapsto" ></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-3"  
+class="td11">  <span 
+class="cmmi-12">G   </span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-4"  
+class="td11"><img 
+src="paper81x.png" alt="&#x21A6;&#x2192;"  class="mapsto" ></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-5"  
+class="td11">      <span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span>(<span 
+class="cmmi-12">K</span>)         </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-6"  
+class="td11"><img 
+src="paper82x.png" alt="&#x21A6;&#x2192;"  class="mapsto" ></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-7"  
+class="td11">     <span 
+class="cmmi-12">H</span><sub><span 
+class="cmsy-8">*</span></sub>(<span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span>(<span 
+class="cmmi-12">K</span>))        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-2-3-1"  
+class="td11">               </td></tr></table></div>
+<!--l. 158--><p class="indent" >&#x00A0;<br 
+class="newline" />where:
+<ul class="itemize1">
+<li class="itemize"><span 
+class="cmmi-12">G </span>is the mutation graph i.e., is the graph defined by the set of genes in <span 
+class="cmmi-12">X </span>where two
+genes are connected if they have harboured mutations for the same patients. <span 
+class="cmmi-12">K </span>is
+the simplicial complex given by the set of all independent sets of <span 
+class="cmmi-12">G</span>. It is important
+to mention again that the construction of the simplificial complex <span 
+class="cmmi-12">K </span>is prohibitively
+hard task for classical computers. This is where our quantum algorithm is used.
+The underlying mathematics detailed in <span class="cite">[<a 
+href="#XraoufHomology">5</a>]</span> is based on the so-called Mayer-Vietoris
+construction which itself is articulated around clique covering the graph <span 
+class="cmmi-12">G</span>. We prove
+in <span class="cite">[<a 
+href="#XraoufHomology">5</a>]</span> that for a large class of graphs, a such covering provides most of the simplices
+of <span 
+class="cmmi-12">K</span>. Another quantum approach which can be used here as well is the quantum
+algorithm presented in <span class="cite">[<a 
+href="#Xseth">9</a>]</span> written in the gate model (our is written as an adiabatic
+                                                                                       
+                                                                                       
+quantum computation).
+</li>
+<li class="itemize"><span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span>(<span 
+class="cmmi-12">K</span>) is the space of pathways. The facets (maximal independent sets) of <span 
+class="cmmi-12">K </span>are
+the pathways and their nerve defines the space of pathways <span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span>(<span 
+class="cmmi-12">K</span>) (pictorially, the
+space of pathways is visualized through its 1-skeleton: the graph with pathways as
+vertices and two pathways are connected if they intersect. Precise definition is in
+the text).
+</li>
+<li class="itemize"><span 
+class="cmmi-12">H</span><sub><span 
+class="cmsy-8">*</span></sub>(<span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span>(<span 
+class="cmmi-12">K</span>)) is the homology of the space of pathways i.e., the shape measurements
+of the space of pathways (definition in the text).</li></ul>
+<!--l. 176--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />We have applied our approach to two different TCGA mutation data: Acute myeloid leukemia
+(AML) <span class="cite">[<a 
+href="#Xdoi:10.1056/NEJMoa1301689">11</a>]</span> and Glioblastoma multiform (GBM) <span class="cite">[<a 
+href="#XGBM2008">10</a>]</span>. For both the data, we have computed the
+assignment tumour <img 
+src="paper83x.png" alt="&#x21A6;&#x2192;"  class="mapsto" > space of pathways using persistent homology. Interestingly, our
+calculation also shows that the space of pathways for AML mutation data is homotopy
+equivalent to a sphere while in the case of GBM data, the space of pathways is homotopy
+equivalent to figure eight (genus-2 surface) &#8211; See Conclusion. Computations here are performed
+using D-Wave 2X quantum computer.
+<!--l. 189--><p class="noindent" >
+<h3 class="likesectionHead"><a 
+ id="x1-2000"></a>Results</h3>
+<!--l. 190--><p class="noindent" >Different errors occurring during data preparation (i.e., sequencing step etc) affect the
+robustness of the data. This implies that pathways computed with our quantum
+procedures are most likely to be affected by the noise and can not be considered as robust
+finding. This obligates us to proceed carefully. Indeed, the assignment above is done as
+follows:
+<ul class="itemize1">
+<li class="itemize">The first step: we think about the number of patients shared between two genes as
+a parameter <span 
+class="cmmi-12">&#x03B5; </span>(thus, absolute exclusivity corresponds to taking this parameter to
+zero).
+</li>
+<li class="itemize">The second step: instead of applying our quantum procedure once, we apply it for a
+range of values of the exclusivity parameter <span 
+class="cmmi-12">&#x03B5; </span>i.e., we consider a filtration of graphs
+(instead of one):
+<table 
+class="equation"><tr><td><a 
+ id="x1-2001r1"></a>
+<center class="math-display" >
+                                                                                       
+                                                                                       
+<img 
+src="paper84x.png" alt="G &#x03B5;0 &#x2282; &#x22C5;&#x22C5;&#x22C5; &#x2282; G &#x03B5;&#x2113;
+" class="math-display" ></center></td><td class="equation-label">(0.1)</td></tr></table>
+<!--l. 200--><p class="nopar" >
+where for each graph <span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> two genes are connected if they have harboured mutations
+concurrently for at least <span 
+class="cmmi-12">&#x03B5; </span>patients. This yields a second filtration of simplicial complexes
+(we call a such filtration, a <span 
+class="cmti-12">persistent pathway complex</span>)
+<table 
+class="equation"><tr><td><a 
+ id="x1-2002r2"></a>
+<center class="math-display" >
+<img 
+src="paper85x.png" alt="K   &#x2282;  &#x22C5;&#x22C5;&#x22C5; &#x2282; K
+  &#x03B5;0          &#x03B5;&#x2113;
+" class="math-display" ></center></td><td class="equation-label">(0.2)</td></tr></table>
+<!--l. 207--><p class="nopar" >
+where <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> is one of the three complexes we define below.
+</li>
+<li class="itemize">The third step: measure the shape (the homology) of the different pathway spaces and
+then &#8220;average&#8221; the shape measurements we obtain.</li></ul>
+<!--l. 211--><p class="noindent" >This (practical) version of homology is what we refer to as persistent homology. It tracks the
+persistent topological features through a range of values of the parameter; genuine
+topological properties persist through the change of the parameter while noise does not (all
+these will be made precise below). The mapping <span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub><img 
+src="paper86x.png" alt="&#x21A6;&#x2192;"  class="mapsto" ><span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> is <span 
+class="cmti-12">functorial </span>i.e., it sends a
+whole filtration (i.e., <a 
+href="#x1-2001r1">0.1<!--tex4ht:ref: firstFiltration --></a>) into a filtration (i.e., <a 
+href="#x1-2002r2">0.2<!--tex4ht:ref: secondFiltration --></a>) . In other words, it is not only
+sending graphs to simplicial complexes but it is also preserving their relations. This
+functoriality is at the heart of persistent homology and makes the whole tracking makes
+sense.
+<!--l. 220--><p class="noindent" >
+<h4 class="likesubsectionHead"><a 
+ id="x1-3000"></a>The graph</h4>
+<!--l. 221--><p class="noindent" >Consider a mutation data for <span 
+class="cmmi-12">m </span>tumors (i.e., patients), where each of the <span 
+class="cmmi-12">n </span>genes is tested for a
+somatic mutation in each patient. To this data we associate a mutation matrix <span 
+class="cmmi-12">B </span>with <span 
+class="cmmi-12">m </span>rows
+and <span 
+class="cmmi-12">n </span>columns, where each row represents a patient and each column represents a gene. The
+entry <span 
+class="cmmi-12">B</span><sub><span 
+class="cmmi-8">ig</span></sub> in row <span 
+class="cmmi-12">i </span>and column <span 
+class="cmmi-12">g </span>is equal to 1 if patient <span 
+class="cmmi-12">i </span>harbours a mutation in gene <span 
+class="cmmi-12">g </span>and it is
+0 otherwise. For a gene <span 
+class="cmmi-12">g</span>, we define
+<table 
+class="equation"><tr><td><a 
+ id="x1-3001r3"></a>
+                                                                                       
+                                                                                       
+<center class="math-display" >
+<img 
+src="paper87x.png" alt="P atients(g) = the set of patients in which g has mutated.
+" class="math-display" ></center></td><td class="equation-label">(0.3)</td></tr></table>
+<!--l. 229--><p class="nopar" >
+<div class="newtheorem">
+<!--l. 230--><p class="noindent" ><span class="head">
+<span 
+class="cmbx-12">Definition</span><span 
+class="cmbx-12">&#x00A0;1</span> </span>
+<!--l. 232--><p class="indent" ><span 
+class="cmti-12">The </span>mutation graph <span 
+class="cmti-12">associated to </span><span 
+class="cmmi-12">B </span><span 
+class="cmti-12">and </span><span 
+class="cmmi-12">&#x03B5; &#x003E; </span>0 <span 
+class="cmti-12">is the graph </span><span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> <span 
+class="cmti-12">whose vertex set is the set of</span>
+<span 
+class="cmti-12">genes and whose edges are pairs of genes </span>(<span 
+class="cmmi-12">g,</span><span style="margin-left:0.3em" class="thinspace"></span><span 
+class="cmmi-12">g</span><span 
+class="cmsy-10x-x-120">&#x2032;</span>) <span 
+class="cmti-12">such that</span>
+<table 
+class="equation"><tr><td><a 
+ id="x1-3003r4"></a>
+<center class="math-display" >
+<img 
+src="paper88x.png" alt="                          &#x2032;
+|Patients(g) &#x2229; P atients (g)| &#x2265; &#x03B5;.
+" class="math-display" ></center></td><td class="equation-label">(0.4)</td></tr></table>
+<!--l. 237--><p class="nopar" >
+</div>
+<!--l. 239--><p class="noindent" >There are evidences <span class="cite">[<a 
+href="#XVogelstein">12</a>,&#x00A0;<a 
+href="#XYeang01082008">14</a>]</span> that pathways are independent sets of mutation graphs (although not
+stated graph theoretically).
+<!--l. 242--><p class="noindent" >
+<h4 class="likesubsectionHead"><a 
+ id="x1-4000"></a>The complex</h4>
+<!--l. 243--><p class="noindent" >We would like to assign to the mutation graph an independance complex. We present below
+three different functorial ways to so.
+<div class="newtheorem">
+<!--l. 245--><p class="noindent" ><span class="head">
+<span 
+class="cmbx-12">Definition</span><span 
+class="cmbx-12">&#x00A0;2</span> </span><span 
+class="cmti-12">Given a mutation graph </span><span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub><span 
+class="cmti-12">, its  </span>persistent pathway complex <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub>  <span 
+class="cmti-12">is the</span>
+<span 
+class="cmti-12">independence complex of </span><span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> <span 
+class="cmti-12">(or equivalently, the clique complex of </span><span class="overline"><span 
+class="cmmi-12">G</span></span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub><span 
+class="cmti-12">).</span>
+                                                                                       
+                                                                                       
+</div>
+<!--l. 249--><p class="noindent" >In addition to <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub>, we also define the persistent pathway complexe <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B7;</span></sub>. <div class="newtheorem">
+<!--l. 250--><p class="noindent" ><span class="head">
+<span 
+class="cmbx-12">Definition</span><span 
+class="cmbx-12">&#x00A0;3</span> </span><span 
+class="cmti-12">The persistent pathway complex </span><span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B7;</span></sub> <span 
+class="cmti-12">is defined as follows. Fix </span><span 
+class="cmmi-12">&#x03B5; </span>= <span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">0</span></sub> <span 
+class="cmti-12">and let</span>
+<span 
+class="cmmi-12">G </span>= <span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span><sub><span 
+class="cmr-6">0</span></sub></sub><span 
+class="cmti-12">. The complex </span><span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B7;</span></sub> <span 
+class="cmti-12">is the complex generated by all independent sets </span><span 
+class="cmmi-12">S </span><span 
+class="cmti-12">of </span><span 
+class="cmmi-12">G </span><span 
+class="cmti-12">with</span>
+<span 
+class="cmti-12">coverage</span>
+<table 
+class="equation"><tr><td><a 
+ id="x1-4003r5"></a>
+<center class="math-display" >
+<img 
+src="paper89x.png" alt="&#x2211;
+    P atients(g) &#x2265; &#x03B7;
+ g&#x2208;S
+" class="math-display" ></center></td><td class="equation-label">(0.5)</td></tr></table>
+<!--l. 255--><p class="nopar" >
+<span 
+class="cmti-12">(the counting</span> <span 
+class="cmmi-12">g </span><span 
+class="cmsy-10x-x-120">&#x2208; </span><span 
+class="cmmi-12">S</span> <span 
+class="cmti-12">is without redundancy). The generation means taking powersets.</span>
+</div>
+<!--l. 259--><p class="noindent" >The following definition is also valid for the persistent pathway complex <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B7;</span></sub>. <div class="newtheorem">
+<!--l. 260--><p class="noindent" ><span class="head">
+<span 
+class="cmbx-12">Definition</span><span 
+class="cmbx-12">&#x00A0;4</span> </span><span 
+class="cmti-12">The space of pathways of a persistent pathway complex </span><span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub>  <span 
+class="cmti-12">is the nerve</span>
+<span 
+class="cmti-12">generated by the facets of the complex i.e., the simplicial complex where </span><span 
+class="cmsy-10x-x-120">{</span><span 
+class="cmmi-12">i</span><sub><span 
+class="cmr-8">0</span></sub><span 
+class="cmmi-12">,</span><img 
+src="paper810x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span><span 
+class="cmmi-12">,i</span><sub><span 
+class="cmmi-8">&#x2113;</span></sub><span 
+class="cmsy-10x-x-120">} </span><span 
+class="cmti-12">is a</span>
+<span 
+class="cmti-12">simplex if and only if the facets indexed with </span><span 
+class="cmmi-12">i</span><sub><span 
+class="cmr-8">0</span></sub><span 
+class="cmmi-12">,</span><img 
+src="paper811x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span><span 
+class="cmmi-12">,i</span><sub><span 
+class="cmmi-8">&#x2113;</span></sub> <span 
+class="cmti-12">have a non empty intersection. We</span>
+<span 
+class="cmti-12">denote the space of pathways by </span><span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub><span 
+class="cmti-12">.</span>
+</div>
+<!--l. 264--><p class="noindent" >The space of pathways is visualized through its 1-skeleton: the graph with pathways as vertices and
+two pathways are connected if they intersect (See Figures 3 and 4).
+<!--l. 267--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />The construction of the independence complex consists of enumerating all independent sets in
+the given graph. This paper advocates the use of quantum computing for such expensive
+operations. We note, however, the existence of different classical heuristics for a such
+enumeration task which are available for small graphs. For instance, Bron and Kerbosch&#8217;s
+algorithm <span class="cite">[<a 
+href="#XBron:1973:AFC:362342.362367">2</a>,&#x00A0;<a 
+href="#XCAZALS2008564">4</a>]</span> is used in <span 
+class="cmss-12">Python </span>graph library <span 
+class="cmss-12">networkx</span>. This algorithm runs out of memory
+for large graphs.
+                                                                                       
+                                                                                       
+<!--l. 273--><p class="noindent" >
+<h4 class="likesubsectionHead"><a 
+ id="x1-5000"></a>The homology</h4>
+<!--l. 274--><p class="noindent" >Recall that our plan is to compute the persistent homology of the independence complex <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub>.
+We have explained that this is simply computing the homology of <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> for a range of increasing
+values of the parameter <span 
+class="cmmi-12">&#x03B5;</span>. In this section we explain this notion of homology (which we have
+introduced as measurements of the shape of the space <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub>). For simplicity, we drop out the
+subscript <span 
+class="cmmi-12">&#x03B5; </span>from the complex <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub>. It is also more convenient to introduce homology for clique
+complexes (for independence complexes, it suffices to replace, everywhere below, cliques with
+independent sets).
+<!--l. 279--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />The homology of the simplicial complex <span 
+class="cmmi-12">K </span>(now a clique complex of <span 
+class="cmmi-12">G</span>) is a sequence of
+<span 
+class="msbm-10x-x-120">&#x2124;</span>-vector spaces (i.e., vector spaces with integer coefficients):
+<table 
+class="equation"><tr><td><a 
+ id="x1-5001r6"></a>
+<center class="math-display" >
+<img 
+src="paper812x.png" alt="H *(K ) :=  H0(K ),H1 (K ),H2 (K ),...
+" class="math-display" ></center></td><td class="equation-label">(0.6)</td></tr></table>
+<!--l. 284--><p class="nopar" >
+defined as follows: The zeroth space&#x00A0;<span 
+class="cmmi-12">H</span><sub><span 
+class="cmr-8">0</span></sub>(<span 
+class="cmmi-12">K</span>) is spanned by all connected components
+of&#x00A0;<span 
+class="cmmi-12">K</span>.Thus, the dimension <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmr-8">0</span></sub> := dim(<span 
+class="cmmi-12">H</span><sub><span 
+class="cmr-8">0</span></sub>(<span 
+class="cmmi-12">K</span>)) gives the number of connected components of the
+space. The first homology space&#x00A0;<span 
+class="cmmi-12">H</span><sub><span 
+class="cmr-8">1</span></sub>(<span 
+class="cmmi-12">K</span>) is spanned by all closed chains of edges in <span 
+class="cmmi-12">G </span>which are
+not triangles; in this case, the dimension <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmr-8">1</span></sub> := dim(<span 
+class="cmmi-12">H</span><sub><span 
+class="cmr-8">1</span></sub>(<span 
+class="cmmi-12">K</span>)) gives the number of holes in the
+space. The second space <span 
+class="cmmi-12">H</span><sub><span 
+class="cmr-8">2</span></sub>(<span 
+class="cmmi-12">K</span>) is spanned by all 2-dimensional enclosed three dimensional
+voids (See caption in Figure 2 below) which are not tetrahedra. Higher dimensional spaces are
+defined in a similar way (although less visual). The dimensions <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmmi-8">i</span></sub> := dim<span 
+class="cmmi-12">H</span><sub><span 
+class="cmmi-8">i</span></sub> are called Betti
+numbers and by now the reader should see that indeed, homology measures the shape of the
+given space.
+<!--l. 295--><p class="indent" ><hr class="figure"><div class="figure" 
+>
+                                                                                       
+                                                                                       
+<a 
+ id="x1-50021"></a><a 
+ id="x1-50032"></a>
+                                                                                       
+                                                                                       
+<div class="minipage"><!--l. 299--><p class="noindent" ><img 
+src="pics/exple1.png" alt="PIC"  
+>
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;1: </span><span  
+class="content">The graph has two connected components which implies <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmr-8">0</span></sub>  = 2. It also has
+two cycles which are not boundaries of triangles, thus <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmr-8">1</span></sub> = 2. Higher Betti numbers are
+zero. </span></div><!--tex4ht:label?: x1-50021 -->
+</div><div class="minipage"><img 
+src="pics/exple2.png" alt="PIC"  
+>
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;2: </span><span  
+class="content">The graph has two connected components giving <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmr-8">0</span></sub> = 2. It also has 7 cycles
+which are not boundaries of triangles which yields <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmr-8">1</span></sub> = 7. Higher Betti numbers are zero
+here as well. If the different sides of the hexagonal prism (right component) are covered
+with triangles then we get instead <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmr-8">1</span></sub> = 0 and <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmr-8">2</span></sub> = 1.</span></div><!--tex4ht:label?: x1-50032 --></div>
+                                                                                       
+                                                                                       
+<!--l. 312--><p class="indent" ></div><hr class="endfigure">
+<!--l. 316--><p class="indent" >
+                                                                                       
+                                                                                       
+<!--l. 317--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />Now, lets us go back to persistent homology and make this notion a bit more precise. For that,
+let us reintroduce the persistent parameter <span 
+class="cmmi-12">&#x03B5; </span>and let <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> be again an independence complex. It
+is clear that if <span 
+class="cmsy-10x-x-120">|</span><span 
+class="cmmi-12">Patients</span>(<span 
+class="cmmi-12">g</span>) <span 
+class="cmsy-10x-x-120">&#x2229;</span> <span 
+class="cmmi-12">Patients</span>(<span 
+class="cmmi-12">g</span><span 
+class="cmsy-10x-x-120">&#x2032;</span>)<span 
+class="cmsy-10x-x-120">|&#x2265; </span><span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">1</span></sub> and <span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">1</span></sub> <span 
+class="cmsy-10x-x-120">&#x2265; </span><span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">2</span></sub> then the pair (<span 
+class="cmmi-12">g,g</span><span 
+class="cmsy-10x-x-120">&#x2032;</span>), which is an
+edge in <span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span><sub><span 
+class="cmr-6">1</span></sub></sub><span 
+class="cmmi-12">, </span>is also is an edge in <span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span><sub><span 
+class="cmr-6">2</span></sub></sub>. This means that <span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span><sub><span 
+class="cmr-6">1</span></sub></sub>  is a subgraph of <span 
+class="cmmi-12">G</span><sub><span 
+class="cmmi-8">&#x03B5;</span><sub><span 
+class="cmr-6">2</span></sub></sub>, thus, we have
+<span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span><sub><span 
+class="cmr-6">2</span> </sub> </sub> <span 
+class="cmsy-10x-x-120">&#x2282; </span><span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span><sub><span 
+class="cmr-6">1</span></sub></sub> whenever <span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">1</span></sub> <span 
+class="cmsy-10x-x-120">&#x2265; </span><span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">2</span></sub> (since an independent set for a given graph is also independent set
+for any of its subgraphs). The mapping <span 
+class="cmmi-12">&#x03B5;</span><img 
+src="paper813x.png" alt="&#x21A6;&#x2192;"  class="mapsto" ><span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> is functorial. It turns out that homology itself is
+functorial and all this functoriality is the mathematical reason why the following is
+correct: one can track the Betti numbers over a range of values <span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">1</span></sub> <span 
+class="cmsy-10x-x-120">&#x2265; </span><span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">2</span></sub> <span 
+class="cmsy-10x-x-120">&#x2265; </span><span 
+class="cmmi-12">&#x03B5;</span><sub><span 
+class="cmr-8">3</span></sub> <span 
+class="cmsy-10x-x-120">&#x2265;</span><img 
+src="paper814x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span>
+and consider the subrange where the Betti numbers are not changing (significantly).
+Pathways within this subrange are considered to have passed our test and declared robust
+computation.
+<h4 class="likesubsectionHead"><a 
+ id="x1-6000"></a>Quantum computations and D-Wave quantum processor</h4>
+<!--l. 330--><p class="noindent" >Here we will first introduce quantum computation in general and quantum annealing in
+particular. We conclude this section by pinpointing to where quantum computing
+(precisely, our quantum algorithms <span class="cite">[<a 
+href="#XraoufHomology">5</a>]</span> and <span class="cite">[<a 
+href="#XraoufQubo">1</a>]</span> is used within the proposal of this
+paper.
+<!--l. 335--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />Quantum computers use non-classical and counterintuitive features of quantum mechanics, such
+as superposition and tunnelling, to perform large scale calculations exponentially faster than
+classical processors. In order to exploit the capabilities of quantum computers, the given
+problem needs to be embedded into the quantum realm, that is, represented as a quantum
+system. An example of that is the binary quadratic optimization problem
+<table 
+class="equation"><tr><td><a 
+ id="x1-6001r7"></a>
+<center class="math-display" >
+<img 
+src="paper815x.png" alt="argmin  nQ (x ,&#x22C5;&#x22C5;&#x22C5;,x  )
+       &#x2124;2    1       n
+" class="math-display" ></center></td><td class="equation-label">(0.7)</td></tr></table>
+<!--l. 341--><p class="nopar" >
+which can be mapped as finding the ground state of an Ising model (a particularly interesting
+type of quantum systems). The binary variables in the objective functions are replaced with
+Pauli operators. The values of a given variable <span 
+class="cmmi-12">x</span><sub><span 
+class="cmmi-8">i</span></sub> are implemented as eigenstates of the
+corresponding Pauli operator. The superposition of the two values is called a qubit (thus, each
+variable introduces a qubit). The quadratic monomials <span 
+class="cmmi-12">Q</span><sub><span 
+class="cmmi-8">ij</span></sub><span 
+class="cmmi-12">x</span><sub><span 
+class="cmmi-8">i</span></sub><span 
+class="cmmi-12">x</span><sub><span 
+class="cmmi-8">j</span></sub> between two variables <span 
+class="cmmi-12">x</span><sub><span 
+class="cmmi-8">i</span></sub> and <span 
+class="cmmi-12">x</span><sub><span 
+class="cmmi-8">j</span></sub>
+are understood as couplings between the two corresponding operators with coupling
+strength&#x00A0;<span 
+class="cmmi-12">Q</span><sub><span 
+class="cmmi-8">ij</span></sub>. Quantum algorithms favour the correct value of <span 
+class="cmmi-12">x</span><sub><span 
+class="cmmi-8">i</span></sub> by amplifying the
+corresponding coefficient in the superposition.
+                                                                                       
+                                                                                       
+<!--l. 345--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />Adiabatic quantum computations (AQC) <span class="cite">[<a 
+href="#Xfarhi">6</a>]</span> are particular type of quantum algorithms which
+solve the ground state problem using the tunnelling feature. The quantum system, which is
+made time dependent by perturbing the problem Hamiltonian, evolves by tunnelling through
+the local minima to the desired solution. This is radically different from the classical thermal
+evolution where the system might get stuck at a local minima if the potential barrier around it
+is significant. D-Wave implements AQC through a particular perturbation scheme <span class="cite">[<a 
+href="#XnatueDwave">8</a>]</span>. It
+involves a particular type of coupling (a particular configuration of the spins) and a particular
+evolution path (i.e., perturbation terms). From the user point of view, it suffices to enter,
+through a cloud based interface, the coefficients of the cost function (which will be
+understood as coupling and external field strengths) and gets the answer as string of
+binary.
+<!--l. 363--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />There are two computational bottlenecks in our proposal detailed in the previous sections. The
+first is the construction of the (facets of the) simplicial complexes and the second being the
+homology calculation itself. These two computations scale exponentially with size of the input
+(i.e., the number of genes in the mutation data) which makes them beyond the capabilities of
+classical computers and can only handled using quantum computing. Both questions
+have been discussed in details in <span class="cite">[<a 
+href="#XraoufHomology">5</a>]</span> and <span class="cite">[<a 
+href="#XraoufQubo">1</a>]</span> so we refrain from elaborating on them
+here.
+<!--l. 388--><p class="noindent" >
+<h3 class="likesectionHead"><a 
+ id="x1-7000"></a>Real mutation data</h3>
+<!--l. 389--><p class="noindent" >We have applied our approach to two mutation data. Acute myeloid leukemia <span class="cite">[<a 
+href="#Xdoi:10.1056/NEJMoa1301689">11</a>]</span> and
+Glioblastoma multiform <span class="cite">[<a 
+href="#XGBM2008">10</a>]</span>. For both data, we have computed the assignment tumour <img 
+src="paper816x.png" alt="&#x21A6;&#x2192;"  class="mapsto" >
+pathways through persistent pathway complexes (thus declared robust output). The
+complete result is presented in long tables (not included here but can be provided
+upon request). Interestingly, our calculation also shows that AML data is homotopy
+equivalent to a sphere while GBM data is homotopy equivalent to figure eight (genus-2
+surface).
+<!--l. 394--><p class="noindent" >
+<h4 class="likesubsectionHead"><a 
+ id="x1-8000"></a>AML</h4>
+<!--l. 398--><p class="noindent" >The data has a cohort of 200 patients and 33 genes (<span class="cite">[<a 
+href="#Xdoi:10.1056/NEJMoa1301689">11</a>]</span>).  We have chosen the coverage
+threshold <span 
+class="cmmi-12">&#x03B7; </span>= 80 patient. We also neglected all genes which have less than 6 patients. These
+numbers are chosen using what one might call the persistence of persistence homology: stability
+of barecodes for pairs (<span 
+class="cmmi-12">&#x03B5;,&#x03B7;</span>) <span 
+class="cmsy-10x-x-120">&#x2265; </span>(6<span 
+class="cmmi-12">, </span>80)) while barecodes for pairs less than (6, 80) exhibit strong
+variations. This is also consistent with the fact that choosing genes with less than 5 or 6
+patients are not common in such studies (genes with low number of patients are not considered
+robust enough and are very prone to errors. It is an extra precaution one takes which
+is commonly used in the field). Now for the numbers of patients and coverage we
+have chosen, the Betti numbers are computed for various values of <span 
+class="cmmi-12">&#x03B5; </span>in the table
+below:
+                                                                                       
+                                                                                       
+<div class="center" 
+>
+<!--l. 403--><p class="noindent" >
+<div class="tabular"><table id="TBL-3" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-3-1g"><col 
+id="TBL-3-1"><col 
+id="TBL-3-2"><col 
+id="TBL-3-3"><col 
+id="TBL-3-4"></colgroup><tr  
+ style="vertical-align:baseline;" id="TBL-3-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-1-1"  
+class="td11"><span 
+class="cmmi-12">&#x03B5;</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-1-2"  
+class="td11"><span 
+class="cmsy-10x-x-120">|<img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub><span 
+class="cmsy-10x-x-120">|</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-1-3"  
+class="td11"><span 
+class="cmmi-12">density</span>(<span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub>)</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-1-4"  
+class="td11">   <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmmi-8">i</span></sub>      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-2-1"  
+class="td11">  </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-3-1"  
+class="td11"> 1</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-3-2"  
+class="td11"> 6  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-3-3"  
+class="td11">   0.86     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-3-4"  
+class="td11">1<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">,</span><img 
+src="paper817x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-4-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-5-1"  
+class="td11"> 2 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-5-2"  
+class="td11"> 84 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-5-3"  
+class="td11">   0.97     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-5-4"  
+class="td11">1<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">,</span><img 
+src="paper818x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-6-1"  
+class="td11"> </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-7-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-7-1"  
+class="td11"> 3 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-7-2"  
+class="td11"> 50 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-7-3"  
+class="td11">     1       </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-7-4"  
+class="td11">1<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">,</span><img 
+src="paper819x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-8-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-8-1"  
+class="td11"> </td></tr></table></div></div>
+<!--l. 414--><p class="noindent" >Figure 3 below gives the (1-skeleton) of the nerve <span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> := <span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span>(<span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub>) for <span 
+class="cmmi-12">&#x03B5; </span>= 1. The Betti numbers <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmmi-8">i</span></sub>
+are not changing thus <span 
+class="cmmi-12">&#x03B5; </span>= 1 is a reasonable choice. Recall that each node represents a pathway
+and two pathways are connected in they intersect (as sets of genes). We have used different
+colours to different pathways (no other meaning for the colouring). The nodes are as
+follows:
+<div class="tabular"><table id="TBL-4" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-4-1g"><col 
+id="TBL-4-1"></colgroup><colgroup id="TBL-4-2g"><col 
+id="TBL-4-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-1-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-2-1"  
+class="td11"><span 
+class="cmr-10">color</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-4-2-2"  
+class="td11"><span 
+class="cmr-10">genes in the pathway                                                                                  </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-3-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-4-1"  
+class="td11"><span 
+class="cmr-10">Blue</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-4-4-2"  
+class="td11"><span 
+class="cmr-10">&#8217;PML.RARA&#8217;, &#8217;MYH11.CBFB&#8217;, &#8217;RUNX1.RUNX1T1&#8217;, &#8217;TP53&#8217;, &#8217;NPM1&#8217;, &#8217;RUNX1&#8217;   </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-5-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-6-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-6-1"  
+class="td11"><span 
+class="cmr-10">Blue light</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-4-6-2"  
+class="td11"><span 
+class="cmr-10">&#8217;PML.RARA&#8217;, &#8217;MYH11.CBFB&#8217;, &#8217;RUNX1.RUNX1T1&#8217;, &#8217;TP53&#8217;, &#8217;NPM1&#8217;, &#8217;MLL.PTD&#8217;</span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-7-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-7-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-8-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-8-1"  
+class="td11"><span 
+class="cmr-10">Orange</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-4-8-2"  
+class="td11"><span 
+class="cmr-10">&#8217;PML.RARA&#8217;, &#8217;MYH11.CBFB&#8217;, &#8217;RUNX1.RUNX1T1&#8217;, &#8217;DNMT3A&#8217;                       </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-9-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-9-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-10-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-10-1"  
+class="td11"><span 
+class="cmr-10">Orange light</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-4-10-2"  
+class="td11"><span 
+class="cmr-10">&#8217;Other Tyr kinases&#8217;, &#8217;MYH11.CBFB&#8217;, &#8217;MLL.PTD&#8217;, &#8217;NPM1&#8217;                                </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-11-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-11-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-12-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-12-1"  
+class="td11"><span 
+class="cmr-10">Green         </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-4-12-2"  
+class="td11"><span 
+class="cmr-10">&#8217;MLL-X fusions&#8217;, &#8217;TP53&#8217;, &#8217;FLT3&#8217;                                                                   </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-13-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-13-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-14-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-14-1"  
+class="td11"><span 
+class="cmr-10">Green light  </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-4-14-2"  
+class="td11"><span 
+class="cmr-10">&#8217;Other Tyr kinases&#8217;, &#8217;MYH11.CBFB&#8217;, &#8217;DNMT3A&#8217;, &#8217;MLL-X fusions&#8217;                      </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-15-"><td  style="white-space:nowrap; text-align:left;" id="TBL-4-15-1"  
+class="td11">          </td></tr></table></div>
+<!--l. 443--><p class="indent" ><hr class="figure"><div class="figure" 
+>
+                                                                                       
+                                                                                       
+<a 
+ id="x1-80013"></a>
+                                                                                       
+                                                                                       
+<a 
+ id="x1-8000doc"></a>
+<div class="center" 
+>
+<!--l. 444--><p class="noindent" >
+<!--l. 445--><p class="noindent" ><img 
+src="pics/nerveAML.png" alt="PIC"  
+></div>
+<br /><div class="caption" 
+><span class="id">Figure&#x00A0;3: </span><span  
+class="content"><span 
+class="cmr-10x-x-109">The 1-skeleton of the nerve </span><span 
+class="cmsy-10x-x-109"><img 
+src="cmsy10-4e.png" alt="N" class="10-109x-x-4e" /></span><sub><span 
+class="cmmi-8">&#x03B5;</span></sub> <span 
+class="cmr-10x-x-109">for </span><span 
+class="cmmi-10x-x-109">&#x03B5; </span><span 
+class="cmr-10x-x-109">= 1 for AML data. In this case, the nerve is</span>
+<span 
+class="cmr-10x-x-109">homotopy equivalent to the sphere. The different pathways represented by the nodes are given</span>
+<span 
+class="cmr-10x-x-109">in the table above. </span></span></div><!--tex4ht:label?: x1-80013 -->
+                                                                                       
+                                                                                       
+<!--l. 453--><p class="indent" ></div><hr class="endfigure">
+<h4 class="likesubsectionHead"><a 
+ id="x1-9000"></a>GBM</h4>
+<!--l. 456--><p class="noindent" >The second mutation data is taken from <span class="cite">[<a 
+href="#XGBM2008">10</a>]</span>. It has 84 patients and around 100 genes.
+Approximately, 70% of the genes have very low coverage so we removed them from the data;
+precisely we have removed all genes with less than 10 patients. We have used the complex <span 
+class="cmmi-12">K</span><sub><span 
+class="cmmi-8">&#x03B7;</span></sub>
+and we have <span 
+class="cmmi-12">&#x03B5; </span>fixed to 7. Concerning the choice of these numbers, the same justification, given
+above, applies here.
+<div class="center" 
+>
+<!--l. 461--><p class="noindent" >
+<div class="tabular"><table id="TBL-5" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-5-1g"><col 
+id="TBL-5-1"><col 
+id="TBL-5-2"><col 
+id="TBL-5-3"><col 
+id="TBL-5-4"></colgroup><tr  
+ style="vertical-align:baseline;" id="TBL-5-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-1-1"  
+class="td11"><span 
+class="cmmi-12">&#x03B7;</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-1-2"  
+class="td11"><span 
+class="cmsy-10x-x-120">|<img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span><sub><span 
+class="cmmi-8">&#x03B7;</span></sub><span 
+class="cmsy-10x-x-120">|</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-1-3"  
+class="td11"><span 
+class="cmmi-12">density</span>(<span 
+class="cmsy-10x-x-120"><img 
+src="cmsy10-c-4e.png" alt="N" class="10-120x-x-4e" /></span><sub><span 
+class="cmmi-8">&#x03B7;</span></sub>)</td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-1-4"  
+class="td11">   <span 
+class="cmmi-12">&#x03B2;</span><sub><span 
+class="cmmi-8">i</span></sub>      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-2-1"  
+class="td11">  </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-3-1"  
+class="td11">66</td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-3-2"  
+class="td11"> 15 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-3-3"  
+class="td11">    0.73      </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-3-4"  
+class="td11">1<span 
+class="cmmi-12">, </span>2<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">,</span><img 
+src="paper820x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-4-1"  
+class="td11">  </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-5-1"  
+class="td11">67</td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-5-2"  
+class="td11"> 14 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-5-3"  
+class="td11">    0.74      </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-5-4"  
+class="td11">1<span 
+class="cmmi-12">, </span>2<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">,</span><img 
+src="paper821x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-6-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-7-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-7-1"  
+class="td11">68</td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-7-2"  
+class="td11"> 12 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-7-3"  
+class="td11">    0.72      </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-7-4"  
+class="td11">1<span 
+class="cmmi-12">, </span>2<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">,</span><img 
+src="paper822x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-8-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-8-1"  
+class="td11"> </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-9-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-9-1"  
+class="td11">69</td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-9-2"  
+class="td11"> 6  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-9-3"  
+class="td11">    0.6      </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-9-4"  
+class="td11">1<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">,</span><img 
+src="paper823x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-10-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-10-1"  
+class="td11"> </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-11-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-11-1"  
+class="td11">70</td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-11-2"  
+class="td11"> 50 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-11-3"  
+class="td11">     1       </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-11-4"  
+class="td11">1<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">, </span>0<span 
+class="cmmi-12">,</span><img 
+src="paper824x.png" alt="&#x22C5;&#x22C5;&#x22C5;"  class="@cdots" ><span style="margin-left:0.3em" class="thinspace"></span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-12-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-12-1"  
+class="td11"> </td></tr></table></div></div>
+<!--l. 477--><p class="indent" ><hr class="figure"><div class="figure" 
+>
+                                                                                       
+                                                                                       
+<a 
+ id="x1-90014"></a>
+                                                                                       
+                                                                                       
+<a 
+ id="x1-9000doc"></a>
+<div class="center" 
+>
+<!--l. 478--><p class="noindent" >
+<!--l. 479--><p class="noindent" ><img 
+src="pics/nerveGBM.png" alt="PIC"  
+></div>
+<br /><div class="caption" 
+><span class="id">Figure&#x00A0;4: </span><span  
+class="content"><span 
+class="cmr-10x-x-109">The nerve for the space of pathways for GBM data (see table below). The nerve is</span>
+<span 
+class="cmr-10x-x-109">homotopy equivalent to a genus-2 surface. </span></span></div><!--tex4ht:label?: x1-90014 -->
+                                                                                       
+                                                                                       
+<!--l. 483--><p class="indent" ></div><hr class="endfigure">
+<!--l. 485--><p class="indent" >&#x00A0;&#x00A0;<br 
+class="newline" />The following table provides the legend for the Figure 4 corresponding the GBM
+data:<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"><table id="TBL-6" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-6-1g"><col 
+id="TBL-6-1"></colgroup><colgroup id="TBL-6-2g"><col 
+id="TBL-6-2"></colgroup><tr  
+ style="vertical-align:baseline;" id="TBL-6-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-1-1"  
+class="td11"><span 
+class="cmr-10">color        </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-1-2"  
+class="td11"><span 
+class="cmr-10">genes in the pathway                                 </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-2-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-3-1"  
+class="td11"><span 
+class="cmr-10">blue</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-3-2"  
+class="td11"><span 
+class="cmr-10">RB1, NF1, CYP27B1, CDKN2B                  </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-4-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-5-1"  
+class="td11"><span 
+class="cmr-10">blue light</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-5-2"  
+class="td11"><span 
+class="cmr-10">RB1, NF1, MDM2, AVIL-CTDSP2, CDKN2B</span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-6-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-6-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-7-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-7-1"  
+class="td11"><span 
+class="cmr-10">orange</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-7-2"  
+class="td11"><span 
+class="cmr-10">TP53, MDM2, OS9, CDKN2A                    </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-8-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-8-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-9-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-9-1"  
+class="td11"><span 
+class="cmr-10">orange light</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-9-2"  
+class="td11"><span 
+class="cmr-10">TP53, MDM2, AVIL-CTDSP2, CDKN2A      </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-10-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-10-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-11-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-11-1"  
+class="td11"><span 
+class="cmr-10">green</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-11-2"  
+class="td11"><span 
+class="cmr-10">TP53, MDM2, DTX3, CDKN2A                  </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-12-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-12-1"  
+class="td11">          </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-13-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-13-1"  
+class="td11"><span 
+class="cmr-10">green light</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-13-2"  
+class="td11"><span 
+class="cmr-10">RB1, NF1, CDK4, CDKN2B                       </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-14-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-14-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-15-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-15-1"  
+class="td11"><span 
+class="cmr-10">brown        </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-15-2"  
+class="td11"><span 
+class="cmr-10">TP53, CDK4, CDKN2A                             </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-16-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-16-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-17-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-17-1"  
+class="td11"><span 
+class="cmr-10">brown light </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-17-2"  
+class="td11"><span 
+class="cmr-10">TP53, CYP27B1, CDKN2A                        </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-18-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-18-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-19-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-19-1"  
+class="td11"><span 
+class="cmr-10">purple       </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-19-2"  
+class="td11"><span 
+class="cmr-10">TP53, MDM2, AVIL-CTDSP2, MTAP          </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-20-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-20-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-21-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-21-1"  
+class="td11"><span 
+class="cmr-10">purple light</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-21-2"  
+class="td11"><span 
+class="cmr-10">TP53, MDM2, DTX3, MTAP                      </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-22-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-22-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-23-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-23-1"  
+class="td11"><span 
+class="cmr-10">red           </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-23-2"  
+class="td11"><span 
+class="cmr-10">RB1, NF1, MDM2, OS9, CDKN2B              </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-24-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-24-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-25-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-25-1"  
+class="td11"><span 
+class="cmr-10">pink          </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-6-25-2"  
+class="td11"><span 
+class="cmr-10">TP53, MDM2, OS9, MTAP                        </span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-26-"><td  style="white-space:nowrap; text-align:left;" id="TBL-6-26-1"  
+class="td11">          </td></tr></table></div>
+<h3 class="likesectionHead"><a 
+ id="x1-10000"></a>Conclusion</h3>
+<!--l. 514--><p class="noindent" >Our goal in this paper is the introduction of quantum computation in pathway computations
+and the proposal to use topological analysis on the space of pathways. We have demonstrated
+both through real data where have reproduced results of earlier works in addition to new
+findings which we hope will have some impact in the field. We have argued that the
+consideration of the pathways collectively, that is, as a topological space not only brings all the
+algebraic machinery (eg., persistent homology showcased here) but also might help
+in revealing novel relations between these pathways. Indeed, we have seen that the
+homology in the case of AML indicates that the mutation data has a shape of a
+sphere. However, in the case of GBM, we get a final set of pathways which has the
+topology of a double torus (or more technically a genus-2 surface). This intriguing
+observation raises the question of whether this fact translates into a new biological
+understanding about cancer which will be astonishing. Such a question is an example of the
+new type of hypotheses one can now formulate about the data and that target the
+connections between the pathways (global properties of the set of pathways). This might
+help in revealing some indications on the way mutations work collectively in causing
+cancer.
+<!--l. 524--><p class="noindent" >
+<h3 class="likesectionHead"><a 
+ id="x1-11000"></a>Acknowledgement</h3>
+<!--l. 525--><p class="noindent" >We thank Dr. G. Robertson (BC Genome) and Dr. S. Rezaei for their constructive feedback and
+comments that greatly improved the manuscript.
+                                                                                       
+                                                                                       
+<!--l. 2--><p class="noindent" >
+<h3 class="likesectionHead"><a 
+ id="x1-12000"></a>References</h3>
+<!--l. 2--><p class="noindent" >
+<div class="thebibliography">
+<p class="bibitem" ><span class="biblabel">
+[1]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XraoufQubo"></a>H.&#x00A0;Alghassi and R.&#x00A0;Dridi.  Quantum annealing algorithms in cancer genomics -
+in progress. 2016.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[2]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XBron:1973:AFC:362342.362367"></a>C.&#x00A0;Bron and J.&#x00A0;Kerbosch.  Algorithm 457: Finding all cliques of an undirected
+graph. <span 
+class="cmti-12">Commun. ACM</span>, 16(9):575&#8211;577, Sept. 1973.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[3]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XMR2476414"></a>G.&#x00A0;Carlsson. Topology and data. <span 
+class="cmti-12">Bull. Amer. Math. Soc. (N.S.)</span>, 46(2):255&#8211;308,
+2009.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[4]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XCAZALS2008564"></a>F.&#x00A0;Cazals and C.&#x00A0;Karande. A note on the problem of reporting maximal cliques.
+<span 
+class="cmti-12">Theoretical Computer Science</span>, 407(1):564 &#8211; 568, 2008.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[5]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XraoufHomology"></a>R.&#x00A0;Dridi and H.&#x00A0;Alghassi.  Homology computation of large point clouds using
+quantum annealing. <span 
+class="cmti-12">arXiv:1512.09328</span>, 2015.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[6]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="Xfarhi"></a>E.&#x00A0;Farhi, J.&#x00A0;Goldstone, S.&#x00A0;Gutmann, and M.&#x00A0;Sipser. Quantum Computation by
+Adiabatic Evolution. <span 
+class="cmti-12">eprint arXiv:quant-ph/0001106</span>, Jan. 2000.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[7]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XhallmarksOfCancer"></a>D.&#x00A0;Hanahan and R.&#x00A0;A. Weinberg. The hallmarks of cancer. <span 
+class="cmti-12">Cell</span>, 100(1):57&#8211;70,
+2016/09/19.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[8]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XnatueDwave"></a>M.&#x00A0;W.
+Johnson, M.&#x00A0;H.&#x00A0;S. Amin, S.&#x00A0;Gildert, T.&#x00A0;Lanting, F.&#x00A0;Hamze, N.&#x00A0;Dickson, R.&#x00A0;Harris,
+A.&#x00A0;J. Berkley, J.&#x00A0;Johansson, P.&#x00A0;Bunyk, E.&#x00A0;M. Chapple, C.&#x00A0;Enderud, J.&#x00A0;P. Hilton,
+K.&#x00A0;Karimi,  E.&#x00A0;Ladizinsky,  N.&#x00A0;Ladizinsky,  T.&#x00A0;Oh,  I.&#x00A0;Perminov,  C.&#x00A0;Rich,  M.&#x00A0;C.
+Thom,  E.&#x00A0;Tolkacheva,  C.&#x00A0;J.&#x00A0;S.  Truncik,  S.&#x00A0;Uchaikin,  J.&#x00A0;Wang,  B.&#x00A0;Wilson,  and
+                                                                                       
+                                                                                       
+G.&#x00A0;Rose. Quantum annealing with manufactured spins. <span 
+class="cmti-12">Nature</span>, 473(7346):194&#8211;198,
+05 2011.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[9]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="Xseth"></a>S.&#x00A0;Lloyd, S.&#x00A0;Garnerone, and P.&#x00A0;Zanardi.  Quantum algorithms for topological
+and geometric analysis of data. 7:10138 EP &#8211;, 01 2016.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[10]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XGBM2008"></a>T.&#x00A0;C. G. A.&#x00A0;R. Network. Comprehensive genomic characterization defines human
+glioblastoma genes and core pathways. <span 
+class="cmti-12">Nature</span>, 455(7216):1061&#8211;1068, 10 2008.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[11]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="Xdoi:10.1056/NEJMoa1301689"></a>T.&#x00A0;C. G. A.&#x00A0;R. Network. Genomic and epigenomic landscapes of adult de novo
+acute myeloid leukemia. <span 
+class="cmti-12">New England Journal of Medicine</span>, 368(22):2059&#8211;2074, 2013.
+PMID: 23634996.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[12]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XVogelstein"></a>B.&#x00A0;Vogelstein and K.&#x00A0;W. Kinzler. Cancer genes and the pathways they control.
+<span 
+class="cmti-12">Nat Med</span>, 10(8):789&#8211;799, 08 2004.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[13]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XbioOfCancer"></a>R.&#x00A0;Weinberg. <span 
+class="cmti-12">The Biology of Cancer</span>.
+</p>
+<p class="bibitem" ><span class="biblabel">
+[14]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XYeang01082008"></a>C.-H. Yeang, F.&#x00A0;McCormick, and A.&#x00A0;Levine. Combinatorial patterns of somatic
+gene mutations in cancer. <span 
+class="cmti-12">The FASEB Journal</span>, 22(8):2605&#8211;2622, 2008.
+</p>
+</div>
+ 
+</body></html> 
+
+                                                                                       
+
+

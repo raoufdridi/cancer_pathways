@@ -1,0 +1,232 @@
+% MACROS article ISSAC 2007
+% ---------------------
+
+%\usepackage{calc}
+%\usepackage{amsthm, amsmath}
+%\usepackage{amssymb}
+
+%%%%%% lettres caligraphiques
+\newcommand{\calA}{{\cal A}}
+\newcommand{\calB}{{\cal B}}
+\newcommand{\calF}{{\cal F}}
+\newcommand{\calG}{{\cal G}}
+\newcommand{\calR}{{\cal R}}
+\newcommand{\calZ}{{\cal Z}}
+\def\D{\mathcal{D}}
+\def\L{\mathcal{L}}
+\def\S{\mathcal{S}}
+\def\I{\mathcal{I}}
+\def\V{\mathcal{V}}
+\def\E{\mathcal{E}}
+\def\M{\mathcal{M}}
+
+
+\def\A{\mathscr{A}}
+\def\F{\mathscr{F}}
+\def\G{\mathscr{G}}
+
+
+%%%%%% Ensembles de nombres
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\CC}{{\mathbb C}}
+
+\newcommand{\K}{{\mathbb K}}
+\newcommand{\kk}{{\mathrm k}}
+
+%%%%%%  mathrm
+\def\J{\mathrm{J}}
+\def\catC{{\bf \mathrm{C}}}
+\def\x{\mathrm{x}}
+\def\a{\mathrm{a}}
+\def\d{\mathrm{d}}
+\def\Bi{\mathrm{Bi}}
+\def\op{\mathrm{op}}
+\def\res{\mathrm{res}}
+\def\span{\mathrm{span}}
+
+\newcommand{\C}{{\bf C}}
+\newcommand{\Objects}{{\bf Objects}}
+\newcommand{\Arrows}{{\bf Arrows}}
+\newcommand{\Sets}{{\bf Sets}}
+
+%%%%% hypergoemetric functions
+\def\2F1{\mbox{ $_2${F}$_1$}}
+\def\1F1{\mbox{ $_1${F}$_1$}}
+\def\1F2{\mbox{ $_1${F}$_2$}}
+\def\0F1{\mbox{ $_0${F}$_1$}}
+
+%%%%% Groupes
+\def\GL{\mathrm{GL}}
+\def\det{\mathrm{det}}
+\def\SL{\mathrm{SL}}
+\def\PSL{\mathrm{PSL}}
+\def\PGL{\mathrm{PGL}}
+\def\O{\mathrm{O}}
+
+%%% Algebres de Lie
+\def\gl{\mathfrak{gl}}
+\def\g{\mathfrak{g}}
+\def\h{\mathfrak{h}}
+\def\frakM{\mathfrak{M}}
+
+\newcommand{\Frac}[2]{\displaystyle \frac{#1}{#2}}
+\newcommand{\Sum}[2]{\displaystyle{\sum_{#1}^{#2}}}
+\newcommand{\Prod}[2]{\displaystyle{\prod_{#1}^{#2}}}
+\newcommand{\Int}[2]{\displaystyle{\int_{#1}^{#2}}}
+\newcommand{\Lim}[1]{\displaystyle{\lim_{#1}\ }}
+
+% systemes d'equations
+\newenvironment{menumerate}{%
+    \renewcommand{\theenumi}{\roman{enumi}}%
+    \renewcommand{\labelenumi}{\rm(\theenumi)}%
+    \begin{enumerate}} {\end{enumerate}}
+
+\newenvironment{system}[1][]%
+	{\begin{eqnarray} #1 \left\{ \begin{array}{lll}}%
+	{\end{array} \right. \end{eqnarray}}
+
+\newenvironment{meqnarray}%
+	{\begin{eqnarray}  \begin{array}{rcl}}%
+	{\end{array}  \end{eqnarray}}
+
+\newenvironment{marray}%
+	{\\ \begin{tabular}{ll}}
+	{\end{tabular}\\}
+
+\newenvironment{program}[1]%
+	{\begin{center} \hrulefill \quad {\sf #1} \quad \hrulefill \\[8pt]
+		\begin{minipage}{0.90\linewidth}}
+	{\end{minipage} \end{center} \hrule \vspace{2pt} \hrule}
+
+\newcommand{\entrylabel}[1]{\mbox{\textsf{#1:}}\hfil}
+\newenvironment{entry}
+   {\begin{list}{}%
+   	{\renewcommand{\makelabel}{\entrylabel}%
+   	  \setlength{\labelwidth}{40pt}%
+   	  \setlength{\leftmargin}{\labelwidth + \labelsep}%
+   	}%
+   }%
+   {\end{list}}
+
+\newenvironment{remark}{\par \noindent {\bf Remark. }}
+			{\hfill $\blacksquare$ \par}
+\newenvironment{example}{\par \noindent {\bf Example. }}
+			{\hfill $\blacksquare$ \par}
+
+\newenvironment{Pmatrix}
+        {$ \left( \!\! \begin{array}{rr} }
+        {\end{array} \!\! \right) $}
+
+
+
+%%%%% Abbreviations
+\newcommand{\fleche}[1]{\stackrel{#1}\longrightarrow}
+\def\ssi{si et seulement si\ }
+\newcommand{\tab}{\hspace*{\fill}}
+\newcommand{\bs}{{\backslash}}
+\newcommand{\eps}{{\varepsilon}}
+\newcommand{\into}{{\;\rightarrow\;}}
+\newcommand{\PD}[2]{\frac{\partial #1}{\partial #2}}
+\def\Hat{\widehat}
+\def\Bar{\overline}
+\def\vect{\vec}
+\def\fbar{{\bar f}}
+\def\xbar{{\bar \x}}
+\newcommand{\afaire}[1]{$$\vdots$$ \begin{center} {\sc #1} \end{center} $$\vdots$$ }
+\newcommand{\pref}[1]{(\ref{#1})}
+
+\def\Maple{{\sc Maple}}
+\def\RG{{\sc Rosenfeld-Gr\"obner}}
+
+
+%%%% Algos
+%\newcommand{\algf}{\sffamily}
+%\newcommand{\FUNCTION}{{\algf fonction}}
+%\newcommand{\BEGIN}{{\algf debut}}
+%\newcommand{\END}{{\algf fin}}
+
+%\newcommand{\IF}{{\algf si}\ \ \ \=\+}
+%\newcommand{\THEN}{{\algf alors}\ }
+%\newcommand{\ELSE}{\=\-\kill{\algf sino}\=\+{\algf n}}
+%\newcommand{\ELIF}{{\algf sinon}\=\+{\algf si}\ }
+%\newcommand{\FI}{\=\-\kill{\algf fin si}\ }
+%\newcommand{\FOR}{{\algf pour}\ \=\+}
+%\newcommand{\ENDFOR}{\=\-\kill{\algf fin pour}\ }
+%\newcommand{\FROM}{{\algf de}\ }
+%\newcommand{\TO}{{\algf \a`a}\ }
+%\newcommand{\WHILE}{{\algf tq}\ \ \ \=\+}
+%\newcommand{\ENDWHILE}{\=\-\kill{\algf fin tq}}
+%\newcommand{\DO}{{\algf faire}\ }
+%\newcommand{\OD}{{\algf od}}
+%\newcommand{\RETURN}{{\algf retourner}}
+%\newcommand{\INDENTER}{{\algf si} \=\+\kill}
+
+
+\newcommand{\algf}{\sffamily}
+\newcommand{\BEGIN}{{\algf begin}}
+\newcommand{\END}{{\algf end}}
+\newcommand{\IF}{{\algf if}}
+\newcommand{\THEN}{{\algf then}}
+\newcommand{\ELSE}{{\algf else}}
+\newcommand{\ELIF}{{\algf elif}}
+\newcommand{\FI}{{\algf fi}}
+\newcommand{\WHILE}{{\algf while}}
+\newcommand{\FOR}{{\algf for}}
+\newcommand{\DO}{{\algf do}}
+\newcommand{\OD}{{\algf od}}
+\newcommand{\RETURN}{{\algf return}}
+\newcommand{\PROCEDURE}{{\algf procedure}}
+\newcommand{\FUNCTION}{{\algf function}}
+\newcommand{\INDENTER}{{\algf si} \=\+\kill}
+
+%% Opérateurs
+\newcommand{\target}{\mathop{\mathrm{t}}}
+\newcommand{\source}{\mathop{\mathrm{s}}}
+\newcommand{\trdeg}{\mathop{\mathrm{tr~deg}}}
+\newcommand{\jet}[2]{\jmath_{#1}^{#2}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\sign}{\operatorname{sign}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\myhom}{\operatorname{hom}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\rp}{\operatorname{rp}}
+\newcommand{\leader}{\operatorname{ld}}
+\newcommand{\card}{\operatorname{card}}
+\newcommand{\Fr}{\operatorname{Frac}}
+\newcommand{\RF}{\operatorname{\mathsf{reduced\_form}}}
+\newcommand{\rang}{\operatorname{rang}}
+
+\def \Id{\mathrm{Id}}
+%\def \span{\mathrm{span}}
+
+\def \diff{\mathrm{Diff}^{\mathrm{loc}} }
+\def \diffg{\mathrm{Diff} }
+\def \Esc{\mathrm{Esc}}
+
+\newcommand{\initial}{\mathop{\mathsf{init}}}
+\newcommand{\separant}{\mathop{\mathsf{sep}}}
+%\newcommand{\rem}{\mathop{\mathsf{rem}}}
+\newcommand{\quo}{\mathop{\mathsf{quo}}}
+\newcommand{\pquo}{\mathop{\mathsf{pquo}}}
+\newcommand{\lcoeff}{\mathop{\mathsf{lcoeff}}}
+\newcommand{\mvar}{\mathop{\mathsf{mvar}}}
+
+\newcommand{\prem}{\mathop{\mathsf{prem}}}
+\newcommand{\remp}{\mathrel{\mathsf{partial\_rem}}}
+\newcommand{\remf}{\mathrel{\mathsf{full\_rem}}}
+\renewcommand{\gcd}{\mathop{\mathrm{gcd}}}
+%\renewcommand{\deg}{\mathop{\mathrm{deg}}}
+\newcommand{\pairs}{\mathop{\mathrm{pairs}}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ideal}[1]{(#1)}
+\newcommand{\cont}{\mathop{\mathrm{cont}}}
+\newcommand{\pp}{\mathop{\mathrm{pp}}}
+\newcommand{\pgcd}{\mathop{\mathrm{pgcd}}}
+\newcommand{\ppmc}{\mathop{\mathrm{ppcm}}}
+\newcommand{\init}{\mathop{\mathrm{initial}}}
