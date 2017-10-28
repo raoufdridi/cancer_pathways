@@ -1,5 +1,5 @@
 # Short description
-Typ: latex document
+Type: latex document
 
 Determination of cancer pathways using persistent homology and quantum computing (DWave).
 
